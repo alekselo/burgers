@@ -8,14 +8,12 @@ import { Banner } from "./Banner";
 const MenuStyled = styled.main`
   background-color: #ccc;
   margin-top: 80px;
-  flex-basis: 100%;
+  margin-left: 380px;
   
 `
 const SectionMenu = styled.section`
   padding: 30px;
-  justify-content: space-around;
-    margin: auto;
-    width: 1718px;  
+   
 `
 
 
