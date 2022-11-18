@@ -42,17 +42,19 @@ const TotalPrice = styled.span`
   margin-left: 20px;
 `;
 
+const EmptyList = styled.p`
+  text-align: center;
+`;
 
-export const Order = () => {
+
+export const Order = ({ orders }) => {
   return (
    <OrderStyled>
      <OrderTitle>Ваш заказ</OrderTitle>
      <OrderContent>
-        <OrderList>
-          <OrderListItem/>
-          <OrderListItem/>
-          <OrderListItem/>
-        </OrderList>
+        {orders.length ? <OrderList>
+          {orders.map(order => <OrderListItem order={order}/>)}
+        </OrderList> : <EmptyList>Список заказов пуст</EmptyList>}
      </OrderContent>
      <OrderTotal>
         <span>Итого</span>
