@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { ButtonCheckout } from "../Style/ButtonCheckout";
 import { OrderListItem } from "./OrderListItem";
-import { totalPriceItems } from "../Modal/ModalItem";
+import { totalPriceItems } from "../Helpers/secondaryFunction";
+import { formatCurrency } from "../Helpers/secondaryFunction";
+
 
 
 const OrderStyled = styled.section`
@@ -55,7 +57,7 @@ export const Order = ({ orders }) => {
     totalPriceItems(order) + result, 0 )
 
 
-  return (
+  return ( 
    <OrderStyled>
      <OrderTitle>Ваш заказ</OrderTitle>
      <OrderContent>
@@ -66,7 +68,7 @@ export const Order = ({ orders }) => {
      <OrderTotal>
         <span>Итого</span>
         <span>5</span>
-        <TotalPrice>{total.toLocaleString('ru-RU', {style: 'currency', currency: "RUB"})} </TotalPrice>
+        <TotalPrice>{formatCurrency(total)} </TotalPrice>
      </OrderTotal>
      <ButtonCheckout>Оформить</ButtonCheckout>
    </OrderStyled>
