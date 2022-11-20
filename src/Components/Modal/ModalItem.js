@@ -5,6 +5,10 @@ import { CountItem } from "./CountItem";
 import { useCount } from "../Hooks/useCount";
 import { formatCurrency } from "../Helpers/secondaryFunction";
 import { totalPriceItems } from "../Helpers/secondaryFunction";
+import {Toppings} from "../Modal/Toppings"
+import { Choices } from "./Choices";
+import { useToppings } from "../Hooks/useToppings"
+import { useChoices } from "../Hooks/useChoices";
 
 
 const Overlay = styled.div`
@@ -62,6 +66,8 @@ const TotalPriceItem = styled.div`
 export const ModalItem = ({openItem, setOpenItem, orders, setOrders}) => {
 
   const counter = useCount();
+  const toppings = useToppings(openItem);
+  const choices = useChoices(openItem);
 
   const closeModal = (e) => {
     if (e.target.id === 'overlay') {
@@ -71,7 +77,9 @@ export const ModalItem = ({openItem, setOpenItem, orders, setOrders}) => {
   
   const order = {
     ...openItem,
-    count: counter.count
+    count: counter.count,
+    topping: toppings.toppings,
+    choice: choices.choice
   };
 
  
@@ -80,7 +88,7 @@ export const ModalItem = ({openItem, setOpenItem, orders, setOrders}) => {
     setOrders([...orders, order]);
     setOpenItem(null);
   }
-
+ 
   return (
 
       <Overlay id="overlay" onClick={closeModal}>
@@ -92,12 +100,14 @@ export const ModalItem = ({openItem, setOpenItem, orders, setOrders}) => {
               <div>{openItem.name}</div>
               <div>{formatCurrency(openItem.price)}</div>
             </HeaderContent>
-            <CountItem {...counter}></CountItem>
+            <CountItem {...counter}/> 
+            {openItem.toppings && <Toppings {...toppings}/>}
+            {openItem.choices && <Choices {...choices} openItem={openItem}/>}
             <TotalPriceItem>
               <span>Цена:</span>
               <span>{formatCurrency(totalPriceItems(order))}</span>
             </TotalPriceItem>
-            <ButtonCheckout onClick={addToOrder}>Добавить</ButtonCheckout>
+            <ButtonCheckout onClick={addToOrder} disabled={order.choices && !order.choice}>Добавить</ButtonCheckout>
           </Content>
         </Modal>
       </Overlay>
