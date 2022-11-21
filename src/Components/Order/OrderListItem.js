@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import trashImage from "../../image/trash.svg";
 import { formatCurrency } from "../Helpers/secondaryFunction";
@@ -8,10 +8,12 @@ const OrderItemStyled = styled.li`
   display: flex;
   margin: 15px 0;
   flex-wrap: wrap;
+  cursor: pointer;
 `;
 
 const ItemName = styled.span`
   flex-grow: 1;
+  
 `;
 
 const ItemPrice = styled.span`
@@ -19,6 +21,7 @@ const ItemPrice = styled.span`
   margin-right: 10px;
   min-width: 65px;
   text-align: right;
+  
 `;
 
 const TrashButton = styled.button`
@@ -39,16 +42,19 @@ const Toppings = styled.div`
   width: 100%;
 `;
 
-export const OrderListItem = ({ order }) => {
+export const OrderListItem = ({ order, index, deleteItem, setOpenItem }) => {
   
   const topping = order.topping.filter(item => item.checked).map(item => item.name).join(", ");
- 
+  
+  const refDeleteButton = useRef(null);
+
   return (
-  <OrderItemStyled>
+  <OrderItemStyled onClick={(e) => e.target !== refDeleteButton.current && setOpenItem({...order, index})}>
     <ItemName>{order.name} {order.choice}</ItemName>
     <span>{order.count}</span>
     <ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
-    <TrashButton/>
+    <TrashButton ref={refDeleteButton} onClick={() => deleteItem(index)}/>
     {topping && <Toppings> Допы: {topping} </Toppings>}
+    
   </OrderItemStyled>
 )};

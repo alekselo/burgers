@@ -14,7 +14,7 @@ const OrderStyled = styled.section`
   top: 80px;
   left: 0;
   background: #fff;
-  min-width: 380px;
+  width: 380px;
   height: calc(100% - 80px);
   box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.25);
   padding: 20px;
@@ -51,7 +51,16 @@ const EmptyList = styled.p`
 `;
 
 
-export const Order = ({ orders }) => {
+export const Order = ({ orders, setOrders, setOpenItem }) => {
+
+  const deleteItem = (index) => {
+    const newOrders = orders.filter((item, i) => index !== i);
+
+    
+
+    setOrders(newOrders);
+
+  };
 
   const total = orders.reduce((result, order)=>
     totalPriceItems(order) + result, 0 )
@@ -63,7 +72,7 @@ export const Order = ({ orders }) => {
      <OrderTitle>Ваш заказ</OrderTitle>
      <OrderContent>
         {orders.length ? <OrderList>
-          {orders.map(order => <OrderListItem order={order}/>)}
+          {orders.map((order, index) => <OrderListItem key={index++} order={order} deleteItem={deleteItem} index={index} setOpenItem={setOpenItem}/>)}
         </OrderList> : <EmptyList>Список заказов пуст</EmptyList>}
      </OrderContent>
      <OrderTotal>
